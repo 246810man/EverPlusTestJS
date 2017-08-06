@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta charset="utf-8" />
+</head>
+<body>
+  <input id="input_value" type="number" value="숫자를 입력하세요">
+  <!-- <input id="button_accept" type="button" value="확인" onclick="Device.fetch()"> -->
+  <input id="button_accept" type="button" value="확인" onclick="addDevice()">
+  <input id="input_fetch_all" type="button" value="fetch_all" onclick="fetchAll()">
+
+
+  <script type="text/javascript">
+  var deviceList = new Array();
+  var inputValueList = new Array();
+  var total_time;
+  var sumValue = 0;
+
+  function fetchAll(){
+    for(var i = 0; i < deviceList.length; i++){
+      deviceList[i].fetch(inputValueList[i]);
+    }
+  }
+
+  function addDevice(){
+    var value = document.getElementById('input_value').value;
+    inputValueList.push(value);
+    deviceList.push(Device);
+  }
+
+    //Device클래스 선언
+    var Device = new function(){
+      //fetch함수(멤버함수) 선언
+      this.fetch = function(value){
+        var random_time = calculate(generateRandomTime, 3);  //랜덤(1~3)초 생성
+        total_time = total_time + Number(random_time);  //전체 딜레이시간에 더해줌
+
+        //랜덤 초 이후 실행됨(실행될 때 alert() 실행)
+        setTimeout(function(){
+        var new_value = calculate(addNumber, value, 100); //+100된 값 생성
+        sumValue = Number(sumValue) + Number(new_value);
+          alert("최초 값: " + value + ", 리턴 값: " + new_value
+          + ", 딜레이: " + random_time + "초" + ", 누적 값: " + sumValue);
+        }, random_time*1000)
+
+
+        //수 계산
+        function calculate(func, number){
+          return func(number);
+        }
+        //수 계산(add)
+        function calculate(func, number, increment){
+          return func(number, increment);
+        }
+        //랜덤 숫자 생성(1 ~ max_time_in_sec)
+        function generateRandomTime(max_time_in_sec){
+          return Math.floor(Math.random()*max_time_in_sec) + 1;
+        }
+        //숫자 더함
+        function addNumber(number, increment){
+          return Number(number) + 100;
+        }
+      };
+
+    };
+
+  </script>
+</body>
+
+</html>
